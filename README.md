@@ -3,7 +3,13 @@ An alternate and improved data type of decimal and floating point
 
 Table Of Contents
 * [Abstract](#abstract)
-* Introduction
+* [Introduction](#introduction)
+  * [Number formats](#number-formats)
+  * [IEEE 754 standard](#ieee-754-standard)
+* [BigBit standard](#bigbit-standard)
+  * [Head Byte format](#head-byte-format)
+  * [Extended Head Byte format](#extended-head-byte-format)
+  * [Linked Bytes format](#linked-bytes-format)
 
 # Abstract
 Floating point arithmetic is a key component for the computer applications doing mathematical calculations specially the applications related to finance or science experiments. It requires large dynamic range and high level of accuracy. Here I'm proposing a new floating number format **BigBit** to store large range of decimal numbers in less space without losing any precision.
@@ -61,7 +67,7 @@ decimal32, decimal64, and decimal128 formats were added to IEEE 754 standard in 
 
 Significand and exponent in this format can be encoded in multiple ways as there is not any specific way defined in the standard itself, eg. [DPD (Densely Packed Decimal)](https://en.wikipedia.org/wiki/Densely_packed_decimal), and [BID (Binary Integer Decimal)](https://en.wikipedia.org/wiki/Binary_integer_decimal).
 
-# BigBit format
+# BigBit standard
 
 BigBit (aka ByteBit) format is pretty much similar to any ordinary binary number representation. However the maximum value of coefficient is 255 instead of 1 and base is 256 instead of 2.
 
@@ -133,7 +139,7 @@ In addition other types which can be represented by this format are;
 
 The value of exponent byte can be in between -127 and 127. It means having the exponent byte, Head Byte format can represent the number up to`±1.34078079e+281` without losing any precision.
 
-### Extended Head Bye format
+### Extended Head Byte format
 
 Extended Head Byte (EHB) format is pretty much similar to Head Byte format. But the count of coefficient bytes and the value of the exponent can be extended. It means this format can represent infinite numbers without precision loss.
 
