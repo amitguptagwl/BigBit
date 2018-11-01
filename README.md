@@ -81,7 +81,7 @@ And the series of coefficient can be represented as `10111` in binary, where eac
 
 ### BigBit format
 
-Byte bit format consider 1 byte as bit and use the same equation to represent a decimal number. Since a byte can represent all the numbers between 0 and 255, we can re-write the equation as follows;
+BigBit format consider 1 byte as bit and use the same equation to represent a decimal number. Since a byte can represent all the numbers between 0 and 255, we can re-write the equation as follows;
 
 ![](bigbit_equation.png)
 
@@ -92,3 +92,43 @@ We can use above expression to represent 4295033089 in ByteBit format as follows
 And the series of coefficient can be represented as `[1,0,1,1,1]`, where each digit represents the value of 1 byte. Maximum value that can be represent with 5 bytes is `[255,255,255,255,255]` i.e. 1.099511628×10¹². 
 
 Though it looks very similar to representation of binary number, the actual representation is reversed with an extra byte for head byte `[5,1,1,1,0,1]`. This representation makes it easy to implement and understand.
+
+## Memory Representation
+
+BigBit standard specifies 3 formats;
+* Head Byte (HB) format
+* Extended Head Byte (EHB) format
+* Linked Bytes (LB) format
+
+### Head Byte format
+
+This is how a number can be represented in memory using Head Byte format;
+
+![](https://lh3.googleusercontent.com/lFUrNCj_Jee7HAnPlkv75mz05hFeMXgwjFUKvdHVMorVqs3FEM1Uwj_6WSllWhVW7PkDjhDCgslGzgha3KkH_DIPablQN5Bd2aRPlG5frcjpckNddVaUUu8VugbcT4ElUEJvlCFo)
+
+Starting byte in the above diagram is the head byte. It tells three things;
+1. If a number is positive or negative (First bit)
+2. If there is any byte present to tell the value of exponent. (Second bit)
+3. How many bytes are present to represent the sequence of coefficients and exponent. ( Next 6 bits)
+
+As there are 6 bits reserved to tell the count of coefficient and exponent bytes, there can be maximum 2^6^ - 1 = 63 bytes to represent the sequence. So the largest number it can represent is  `13407807929942597099574024998205846127479365820592393377723561443721764030073546976801874298166903427690031858186486050853753882811946569946433649006084095` or `1.34078079e+154`.
+
+If the second bit of the head byte is 1 then the next byte represent the value of exponent, where the first bit of the exponent byte tells the sign.
+
+
+![](https://lh5.googleusercontent.com/V048FchPIvTyOTrmVWLTX5XBvmDny4ZQRFe82t1Q4wPHprJH8-egJmXeMcZTRGNUSGNkU2TvS8jukpo5qa3fwljy90ihEuvykAJqE_W6qNH9ZnPe2J-NS8Ak9Grz0dTY9OdaBH9N)
+
+#### Representable Numbers
+As we seen above, HB format can represent the numbers between `-1.34078079e+154` and `+1.34078079e+154` but the value of exponent can be between `-127` and `+127` only. Which means the largest decimal number this format can represent is `1.34078079e+127`.
+
+In addition other types which can be represented by this format are;
+
+| Number Type | Minimum Bytes | Maximum Bytes | Value |
+| ------------- | ------------- | --------------- | --------------- |
+| Zero | 1 | 1 |  0 000 0000 |
+| NaN | 1 | 1 |  1 000 0000 |
+| +&infin; | 1 | 1 | 0 100 0000 |
+| -&infin; | 1 | 1 | 1 100 0000 |
+
+
+The value of exponent byte can be in between -127 and 127. It means having the exponent byte, Head Byte format can represent the number up to`±1.34078079e+281` without losing any precision.
