@@ -175,3 +175,84 @@ We can use the same expression to denote Linked bytes sequence with base 128.
 
 The only advantage of Linked Bytes format over Head Byte format is saving 1 extra byte for the numbers up to 2.814749767×10¹⁴ . And using same number of bytes to represent a number from 2.814749767×10¹⁴ + 1 to 7.205759404×10¹⁶.
 
+## Arithmetic
+
+BigBit standard doesn't only save computer memory, it allows direct arithmetic on bytes instead of converting them to decimal number first to speed up the processing. For instance, head byte can tell the count of bytes used in memory, which helps to skip to the next data  without decoding current data. In addition, here is explanation of how basic mathematics operations can be performed on bytes.
+
+In case of Linked Bytes format, all the bytes excluding last byte need to be subtracted by 128 or bitwise AND (&) by 127 before any mathematical operation as the MSB is 1.
+
+### Addition
+Number `25487` and `22659874523` can be represented as follow. ( coefficient bytes only) 
+```
+X = 25487  = [ 143, 99]
+Y = 22659874523 = [ 219, 62, 162, 70, 5 ]
+Z = X + Y
+```
+
+We can directly add the series in such a way that the value of any coefficient must not be more than 255. For this we can think each coefficient as up-counter, range from 0 to 255. As soon as the value of a coefficient reaches to 256, it resets to 0 and the next coefficient is increased by 1. 
+
+```
+X[0] + Y[0] = 143 + 219 = 362 = 106 + 256 
+=> [ 106, 1 ]
+
+X[1] + Y[1] = 99 + 62 = 161
+=> [ 106, 162 ]
+
+X[2] + Y[2] = 0 + 162 = 162
+=> [ 106, 162, 162 ]
+
+X[3] + Y[3] = 0 + 70 = 70
+=> [ 106, 162, 162, 70 ]
+
+X[4] + Y[4] = 0 + 5 = 5
+=> [ 106, 162, 162, 70, 5 ]
+```
+
+Please note that 
+* if any of the number is having the exponent then the value of exponent for both numbers need to be equal before any operation.
+* the same procedure will be used to operate linked bytes for addition but we'll use base 128 number instead. 
+
+### Subtraction
+To subtract 25487 from 22659874523, we can represent the series of coefficient bytes as follows; 
+
+```
+X = 25487  	= [ 143, 99]
+Y = 22659874523 = [ 219, 62, 162, 70, 5 ]
+Z = X - Y
+Z = -(Y - X) //Since X is biiger than Y
+```
+First we need to know which number is bigger. If we are subtracting big number from smaller then change the sign bit of result number. Now subtract each coefficient such that if the result is negative then borrow 256 from the next coefficient and subtract 1 from next coefficient.
+
+```
+Y[0] - X[0] = 219 -  143  = 76
+=> [ 76 ]
+
+Y[1] - X[1] = 62 -  99  = -37 = 256 - 37
+=> [ 76, 219, -1 ]
+
+Y[2] - X[2] = 162 -  0  = 162
+=> [ 76, 219, 161 ]
+
+Y[3] - X[3] = 70 -  0  = 70
+=> [ 76, 219, 161, 70 ]
+
+Y[4] - X[4] = 5 -  0  = 5
+=> [ 76, 219, 161, 70, 5 ]
+
+```
+Please note that 
+* if any of the number is having the exponent then the value of exponent for both numbers need to be equal before any operation.
+* the same procedure will be used to operate linked bytes for subtraction but use base 128 number instead.
+
+### Other operations
+For Head Byte and Extended Head Byte format;
+* We can perform the multiplication and division in the same way we multiply or divide polynomial equations. 
+* To make a number absolute, we just need to change the sign bit. 
+* To compare two numbers (having same exponent), we need to compare the count of coefficient bytes. If they are same we can compare the value of last coefficient byte.
+* To make a number odd/even or to determine if a number is odd/even, We can change/ check the last bit of 1st coefficient byte.
+* To change the position of decimal point, the value of exponent byte can be changed.
+
+For Linked Bytes format
+* We can perform the multiplication and division in the same way we multiply or divide polynomial equations. 
+* To make a number odd/even or to determine if a number is odd/even, We can change/ check the last bit of 1st coefficient byte.
+
