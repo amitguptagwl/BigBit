@@ -262,3 +262,5 @@ For Linked Bytes format
 * We can perform the multiplication and division in the same way we multiply or divide polynomial equations. 
 * To make a number odd/even or to determine if a number is odd/even, We can change/ check the last bit of 1st coefficient byte.
 
+--------------------
+This document was originally written in Aug 2018 but being published on github on 1st Nov 2018
