@@ -2,7 +2,7 @@
 An alternate and improved data type of decimal and floating point
 
 Table Of Contents
-* Abstract
+* [Abstract](#abstract)
 * Introduction
 
 # Abstract
