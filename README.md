@@ -163,3 +163,15 @@ Extended Head Byte can represent infinite range of numbers without precision los
 | +&infin; | 1 | 1 | 0 100 0000 |
 | -&infin; | 1 | 1 | 1 100 0000 |
 
+
+### Linked Bytes format
+Unlike above two formats, Linked Bytes format doesn't have any head byte. Instead this format is used to represent positive integers only. First bit of every byte indicates that the next byte is coefficient byte.
+
+![](https://lh3.googleusercontent.com/YyHR1DfQTnJn9h2JTr0yX3ACgf9dPRpEXZT8Mjfwbj60PYNIFJGVejePHHxW8NE-DHjDejb_kVnqH_ignTnaLADb6jkfkowmE00_cPBQIDOhzOyfrzUjm5ZE7Y48XrTzNnRmkr2r)
+
+We can use the same expression to denote Linked bytes sequence with base 128.
+
+![](linked_byte_format.png)
+
+The only advantage of Linked Bytes format over Head Byte format is saving 1 extra byte for the numbers up to 2.814749767×10¹⁴ . And using same number of bytes to represent a number from 2.814749767×10¹⁴ + 1 to 7.205759404×10¹⁶.
+
