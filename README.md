@@ -115,17 +115,17 @@ This is how a number can be represented in memory using Head Byte format;
 Starting byte in the above diagram is the head byte. It tells three things;
 1. If a number is positive or negative (First bit)
 2. If there is any byte present to tell the value of exponent. (Second bit)
-3. How many bytes are present to represent the sequence of coefficients and exponent. ( Next 6 bits)
+3. How many bytes are present to represent the sequence of coefficients and exponent byte. ( Next 6 bits)
 
-As there are 6 bits reserved to tell the count of coefficient and exponent bytes, there can be maximum 2^6^ - 1 = 63 bytes to represent the sequence. So the largest number it can represent is  `13407807929942597099574024998205846127479365820592393377723561443721764030073546976801874298166903427690031858186486050853753882811946569946433649006084095` or `1.34078079e+154`.
+As there are 6 bits reserved to tell the count of coefficient bytes, there can be maximum 2<sup>6</sup> - 1 = 63 bytes to represent the sequence. So the largest number it can represent is  `13407807929942597099574024998205846127479365820592393377723561443721764030073546976801874298166903427690031858186486050853753882811946569946433649006084095` or `1.34078079e+154`.
 
 If the second bit of the head byte is 1 then the next byte represent the value of exponent, where the first bit of the exponent byte tells the sign.
 
 
-![](https://lh5.googleusercontent.com/V048FchPIvTyOTrmVWLTX5XBvmDny4ZQRFe82t1Q4wPHprJH8-egJmXeMcZTRGNUSGNkU2TvS8jukpo5qa3fwljy90ihEuvykAJqE_W6qNH9ZnPe2J-NS8Ak9Grz0dTY9OdaBH9N)
+![](HeadByteExponent.png)
 
 #### Representable Numbers
-As we seen above, HB format can represent the numbers between `-1.34078079e+154` and `+1.34078079e+154` but the value of exponent can be between `-127` and `+127` only. Which means the largest decimal number this format can represent is `1.34078079e+127`.
+As we seen above, HB format can represent the numbers between `-1.34078079e+154` and `+1.34078079e+154` but the value of exponent can be between `-127` and `+127` only. Which means the largest decimal number this format can represent is `1.34078079e+280`. (But remember that the larger number can have only 0 in last, and the count section )
 
 In addition other types which can be represented by this format are;
 
@@ -151,7 +151,7 @@ In above diagram;
 1. If a number is positive or negative (1st bit)
 2. If there is any byte present to tell the value of exponent. (2nd bit)
 3. If the extended bytes to represent the extended count of coefficient and exponent bytes are present. (3rd bit)
-5. Remainder of 32 base number which tell how many coefficient and exponent bytes are present ( Next 5 bits)
+5. Remainder of 32 base number which tell how many coefficient bytes are present ( Next 5 bits)
 
 **2nd Byte** is extended count byte. It presents only if the 3rd bit of head byte is 1. The first bit of the extended count is the link bit and set to 1 if there is another extended byte is present. Value of extended count byte represents the quotient of base 32 number. So the total count of exponent and coefficient bytes can be calculated as `32x3 + 1 = 97`
 
