@@ -129,46 +129,55 @@ As we seen above, HB format can represent the numbers between `-1.34078079e+154`
 
 In addition other types which can be represented by this format are;
 
-| Number Type | Minimum Bytes | Maximum Bytes | Value |
-| ------------- | ------------- | --------------- | --------------- |
-| Zero | 1 | 1 |  0 000 0000 |
-| NaN | 1 | 1 |  1 000 0000 |
-| +&infin; | 1 | 1 | 0 100 0000 |
-| -&infin; | 1 | 1 | 1 100 0000 |
+| Number Type |  Value |
+| ------------- | --------------- |
+| Zero |  0 000 0000 |
+| NaN |  1 000 0000 |
+| +&infin; | 0 100 0000 |
+| -&infin; | 1 100 0000 |
 
 
 The value of exponent byte can be in between -127 and 127. It means having the exponent byte, Head Byte format can represent the number up to`±1.34078079e+281` without losing any precision.
 
 ### Extended Head Byte format
 
-Extended Head Byte (EHB) format is pretty much similar to Head Byte format. But the count of coefficient bytes and the value of the exponent can be extended. It means this format can represent infinite numbers without precision loss.
+Extended Head Byte (EHB) format seems pretty much similar to Head Byte format. But the head byte contains more detail about the value. The count of coefficient bytes and the value of the exponent bytes can be extended. It means this format can represent infinite numbers without precision loss.
 
-![](https://lh4.googleusercontent.com/Tgs7IT50Vnsv0ZjJvAQkT0q-5SKYHOAjIEDwrjQRZJkjXjgnOnzon1OhlQKOaYOpzrjUPoHG7VcfC9M_4ZyWYS5OSO5luGOyllVsffUutVvEXcI4uwR3f7TqK6SqfWBCIVBcZMwJ)
+![](ExtendedHeadByte2.png)
 
 In above diagram;
 
-**1st Byte** is the head byte. It gives the following information
-1. If a number is positive or negative (1st bit)
+**Head Byte**:
+The first 4 bits of the head byte give the following information
+1. sign: If the number is negative (1st bit)
 2. If there is any byte present to tell the value of exponent. (2nd bit)
-3. If the extended bytes to represent the extended count of coefficient and exponent bytes are present. (3rd bit)
-5. Remainder of 32 base number which tell how many coefficient bytes are present ( Next 5 bits)
+3. If the exponent value is negative. (3rd bit)
+4. If there is any byte present to tell the count of exponent and coefficient bytes .
 
-**2nd Byte** is extended count byte. It presents only if the 3rd bit of head byte is 1. The first bit of the extended count is the link bit and set to 1 if there is another extended byte is present. Value of extended count byte represents the quotient of base 32 number. So the total count of exponent and coefficient bytes can be calculated as `32x3 + 1 = 97`
+The next 4 bits tell the count of exponent and coefficient bytes. If the value is greater than 15 then separate byte should be used.
 
-**3rd Byte** is exponent byte. It presents only if the 2nd bit of head byte is 1. The first bit of the exponent byte is the link bit and set to 1 if there is extended exponent byte is present. The second bit of exponent byte is the sign bit.  Rest of the bits represent the remainder of base 64 number. Th value of extended exponent byte represent the quotient and it can be between 0 - 127. The first bit of all extended exponent bytes is the link bit and rest 7 bits contains value. 
+When count bytes and exponent bytes both are present then count bytes should come first. The values of both is encoded using Linked Bytes (LB) format.
 
-**Next 96 bytes** are coefficient bytes.
+Following form is also valid for above representation;
+
+![](ExtendedHeadByte.png)
 
 #### Representable Numbers
 Extended Head Byte can represent infinite range of numbers without precision loss. In addition, other types which can be represented by this number are;
 
-| Number Type | Minimum Bytes | Maximum Bytes | Value |
-| ------------- | ------------- | --------------- | --------------- |
-| Zero | 1 | 1 |  0 000 0000 |
-| NaN | 1 | 1 |  1 000 0000 |
-| +&infin; | 1 | 1 | 0 100 0000 |
-| -&infin; | 1 | 1 | 1 100 0000 |
+| Number Type  | Value |
+| ------------- |--------------- |
+| Zero  |  0 000 0000 |
+| NaN  |  1 000 0000 |
+| +&infin;  | 0 100 0000 |
+| -&infin;  | 1 100 0000 |
+| Unassigned | 0 010 0000 |
+| Unassigned | 1 010 0000 |
+| Unassigned | 1 110 0000 |
+| Unassigned | 0 011 0000 |
+| Unassigned | 1 011 0000 |
 
+The last 4 bits of head byte can be used to represent the nature of the value when 4th bit of head byte is 1 i.e. when count byte is present.
 
 ### Linked Bytes format
 Unlike above two formats, Linked Bytes format doesn't have any head byte. Instead this format is used to represent positive integers only. First bit of every byte indicates that the next byte is coefficient byte.
