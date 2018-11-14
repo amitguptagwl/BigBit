@@ -273,3 +273,9 @@ For Linked Bytes format
 
 --------------------
 This document was originally written in Aug 2018 but being published on github on 1st Nov 2018
+
+## Implementations
+
+* [bigbit.js](https://github.com/nimndata/BigBit) (node.js)
+* [Online demo](http://bigbit.github.io/bigbitjs)
+
