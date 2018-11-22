@@ -10,6 +10,9 @@ Table Of Contents
   * [Head Byte format](#head-byte-format)
   * [Extended Head Byte format](#extended-head-byte-format)
   * [Linked Bytes format](#linked-bytes-format)
+* [Encoding](#encoding)
+* [Security](#security)
+* [Term](#term)
 
 # Abstract
 Floating point arithmetic is a key component for the computer applications doing mathematical calculations specially the applications related to finance or science experiments. It requires large dynamic range and high level of accuracy. Here I'm proposing a new floating number format **BigBit** to store large range of decimal numbers in less space without losing any precision.
@@ -270,6 +273,16 @@ For Head Byte and Extended Head Byte format;
 For Linked Bytes format
 * We can perform the multiplication and division in the same way we multiply or divide polynomial equations. 
 * To make a number odd/even or to determine if a number is odd/even, We can change/ check the last bit of 1st coefficient byte.
+
+# Encoding
+BitBig Linked Bytes (LB) format can be used to represent any text string in less memory space.
+
+# Security
+A decoder needs to calculate exponent value to decode the memory bytes in actual number. As all the formats in BigBit standard can represent very large number whereas LB & EHB format can represent any number in the universe, an attacker can alter bytes to engage the CPU of target machine to do complex calculation. Hence, It can be a good practice to limit the highest value or maximum number of bytes.
+
+# Terms
+You can freely use this standard for personal, commercial, educational, or other purpose without notifying the original author or mentioning author's name. Use BigBit on your own risk. The author will not be libale and responsible for any kind of issue caused by this standard.
+
 
 --------------------
 This document was originally written in Aug 2018 but being published on github on 1st Nov 2018
