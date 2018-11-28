@@ -275,7 +275,16 @@ For Linked Bytes format
 * To make a number odd/even or to determine if a number is odd/even, We can change/ check the last bit of 1st coefficient byte.
 
 # Encoding
-BitBig Linked Bytes (LB) format can be used to represent any text string in less memory space.
+BitBig Linked Bytes (LB) format can be used to represent any text string in less memory space. Where we need to decide if we want to choose UTF-8, or UTF-16, or so on encoding based on what type unicodes our text string can have, LB format provides the single encoding to represent all codepoints. For example, `97` is the codepoint of `a` can be represented by 1 byte in UTF-8 format, and 2 bytes in UTF-16 format. But it takses only 1 byte in LB format. Similarly for the codepoint of LOUDLY CRYING FACE :sob: can be represented by 4 bytes in UTF-8, and UTF-16 formats but by only 3 bytes in LB format.
+
+```
+codepoint: 128557
+UTF-8: [240,159,152,173]
+UTF-16: [61,216,45,222]
+LB: [173,236,7]
+```
+
+
 
 # Security
 A decoder needs to calculate exponent value to decode the memory bytes in actual number. As all the formats in BigBit standard can represent very large number whereas LB & EHB format can represent any number in the universe, an attacker can alter bytes to engage the CPU of target machine to do complex calculation. Hence, It can be a good practice to limit the highest value or maximum number of bytes.
