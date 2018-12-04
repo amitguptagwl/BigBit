@@ -298,6 +298,6 @@ This document was originally written in Aug 2018 but being published on github o
 
 ## Implementations
 
-* [bigbit.js](https://github.com/nimndata/BigBit) (node.js)
+* [bigbit.js](https://github.com/bigbit/bigbitjs) (node.js)
 * [Online demo](http://bigbit.github.io/bigbitjs)
 
