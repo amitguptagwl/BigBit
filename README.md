@@ -274,7 +274,6 @@ You can freely use this standard for personal, commercial, educational, or other
 --------------------
 This document was originally written in August 2018, but was published to GitHub on 1st November 2018.
 
-## Implementations
-
-* [bigbit.js](https://github.com/bigbit/bigbitjs) (node.js)
-* [Online demo](http://bigbit.github.io/bigbitjs)
+# Implementations
+* [bigbit.js](https://github.com/bigbit/bigbitjs) — Node.js; see the [online demo](http://bigbit.github.io/bigbitjs) which uses this implementation.
+* [bigbit.rs](https://github.com/kotauskas/bigbit.rs) — Rust. This one is still a work in progress.
